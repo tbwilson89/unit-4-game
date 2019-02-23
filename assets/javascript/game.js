@@ -6,17 +6,17 @@ gameObj = {
       cardColor: 'text-white bg-primary',
       healthMax: 100,
       healthCurrent: 100,
-      attack: 12,
+      attack: 10,
       atkStack: 0,
-      counter: 15
+      counter: 20
     },
     boba: {
       name: `Boba Fett`,
       img: `./assets/images/boba.jpg`,
       cardColor: 'text-white bg-success',
-      healthMax: 130,
-      healthCurrent: 130,
-      attack: 10,
+      healthMax: 105,
+      healthCurrent: 100,
+      attack: 9,
       atkStack: 0,
       counter: 12
     },
@@ -24,21 +24,21 @@ gameObj = {
       name: `Obi-Wan Kenobi`,
       img: `./assets/images/obi.jpg`,
       cardColor: 'text-white bg-secondary',
-      healthMax: 140,
-      healthCurrent: 140,
-      attack: 15,
+      healthMax: 105,
+      healthCurrent: 105,
+      attack: 9,
       atkStack: 0,
-      counter: 20
+      counter: 18
     },
     vader: {
       name: `Darth Vader`,
       img: `./assets/images/vader.jpg`,
       cardColor: 'text-white bg-dark',
-      healthMax: 150,
-      healthCurrent: 150,
-      attack: 10,
+      healthMax: 90,
+      healthCurrent: 90,
+      attack: 11,
       atkStack: 0,
-      counter: 25
+      counter: 13
     }
   },
   playerChoice: '',
@@ -48,11 +48,23 @@ gameObj = {
   combatFunction: function(){
     this.characters[this.playerChoice].atkStack += this.characters[this.playerChoice].attack
     this.characters[this.enemyChoice].healthCurrent -= this.characters[this.playerChoice].atkStack
+    $(`#${this.enemyChoice}-health`).text(this.characters[this.enemyChoice].healthCurrent)
+    $('.battle-log').append(`<p class="log-data ${this.playerChoice}-log text-light">${this.characters[this.playerChoice].name} attacked ${this.characters[this.enemyChoice].name} for ${this.characters[this.playerChoice].atkStack}.</p>`)
+    if(this.characters[this.enemyChoice].healthCurrent <= 0){
+      console.log('YOU WON THIS FIGHT!')
+      $('.battle-log').append(`<p class="log-data ${this.enemyChoice}-log enemy-log text-light">${this.characters[this.enemyChoice].name} has been defeated!</p>`)
+      $(`#${this.enemyChoice}`).remove()
+      this.enemyChoice = ''
+      this.wins++
+      return;
+    }
     this.characters[this.playerChoice].healthCurrent -= this.characters[this.enemyChoice].counter
     $(`#${this.playerChoice}-health`).text(this.characters[this.playerChoice].healthCurrent)
-    $(`#${this.enemyChoice}-health`).text(this.characters[this.enemyChoice].healthCurrent)
-    $('.battle-log').append(`<p class="log-data ${this.playerChoice}-log">${this.characters[this.playerChoice].name} attacked ${this.characters[this.enemyChoice].name} for ${this.characters[this.playerChoice].atkStack}.</p>`)
-    $('.battle-log').append(`<p class="log-data ${this.enemyChoice}-log enemy-log">${this.characters[this.enemyChoice].name} attacked ${this.characters[this.playerChoice].name} for ${this.characters[this.enemyChoice].counter}.</p>`)
+    $('.battle-log').append(`<p class="log-data ${this.enemyChoice}-log enemy-log text-light">${this.characters[this.enemyChoice].name} attacked ${this.characters[this.playerChoice].name} for ${this.characters[this.enemyChoice].counter}.</p>`)
+    if(this.characters[this.playerChoice].healthCurrent <= 0){
+      console.log('YOU LOSE')
+      return;
+    }
   }
 }
 
@@ -82,7 +94,7 @@ $('.character-cards').on('click', (e)=>{
   if(gameObj.playerChoice === ''){
     gameObj.playerChoice = e.currentTarget.id
     $(`#${e.currentTarget.id}`).appendTo('#cs-player')
-  } else if (gameObj.enemyChoice === ''){
+  } else if (gameObj.enemyChoice === '' && gameObj.playerChoice !== e.currentTarget.id){
     gameObj.enemyChoice = e.currentTarget.id
     $(`#${e.currentTarget.id}`).appendTo('#cs-enemy')
     $('.battle-log').addClass('show')
@@ -91,5 +103,5 @@ $('.character-cards').on('click', (e)=>{
 })
 $('#atk-btn').on('click', ()=>{
   gameObj.combatFunction()
-  console.log(`${gameObj.characters[gameObj.playerChoice].atkStack} and ${gameObj.characters[gameObj.enemyChoice].healthCurrent}`)
+  // console.log(`${gameObj.characters[gameObj.playerChoice].atkStack} and ${gameObj.characters[gameObj.enemyChoice].healthCurrent}`)
 })
