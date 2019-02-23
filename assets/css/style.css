@@ -1,0 +1,100 @@
+* {
+  box-sizing: border-box;
+}
+h5 {
+  font-size: 24px;
+  font-weight: bold;
+}
+p {
+  font-size: 20px;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+#main-content {
+  flex: 1;
+}
+.outer-container {
+  width: 1300px;
+  margin: 0 auto;
+}
+.character-cards {
+}
+.character-cards img {
+  height: 180px;
+  object-fit: cover;
+  overflow: hidden;
+}
+#character-select-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+.card-slot {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+#character-fight-row {
+  display: flex;
+  justify-content: space-between;
+  height: 30vh;
+  margin: 50px 0;
+}
+#battle-box {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+}
+.scroll-contain {
+  display: flex;
+}
+.battle-log {
+  display: none;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin-bottom: 5px;
+  padding: 10px;
+  flex: 1;
+  overflow-y: auto;
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 0 0 2px black;
+}
+.log-data {
+  width: 100%;
+  margin: 2px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-align: left;
+}
+.luke-log {
+  background: #007bff;
+}
+.boba-log {
+  background: #28a745;
+}
+.obi-log {
+  background: #6c757d;
+}
+.vader-log {
+  background: #343a40;
+}
+.player-log {
+
+}
+.enemy-log {
+  text-align: right;
+}
+.battle-actions {
+  display: none;
+  /* border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 0 0 2px black; */
+}
+.show {
+  display: flex;
+}
