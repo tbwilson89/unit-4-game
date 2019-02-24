@@ -1,9 +1,21 @@
 * {
   box-sizing: border-box;
 }
+h1 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
 h5 {
   font-size: 24px;
   font-weight: bold;
+}
+header {
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  background: #3f3f3f;
 }
 p {
   font-size: 20px;
@@ -12,6 +24,9 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+.btn-restart {
+  display: none;
 }
 #main-content {
   flex: 1;
@@ -94,6 +109,9 @@ body {
   /* border: 1px solid black;
   border-radius: 5px;
   box-shadow: 0 0 2px black; */
+}
+.btn-show {
+  display: inherit;
 }
 .show {
   display: flex;
