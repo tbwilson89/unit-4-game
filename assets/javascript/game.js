@@ -4,8 +4,8 @@ gameObj = {
       name: `Luke Skywalker`,
       img: `./assets/images/luke.jpg`,
       cardColor: 'text-white bg-primary',
-      healthMax: 100,
-      healthCurrent: 100,
+      healthMax: 95,
+      healthCurrent: 95,
       attack: 10,
       atkStack: 0,
       counter: 20
@@ -14,9 +14,9 @@ gameObj = {
       name: `Boba Fett`,
       img: `./assets/images/boba.jpg`,
       cardColor: 'text-white bg-success',
-      healthMax: 105,
+      healthMax: 100,
       healthCurrent: 100,
-      attack: 9,
+      attack: 8,
       atkStack: 0,
       counter: 13
     },
@@ -24,8 +24,8 @@ gameObj = {
       name: `Obi-Wan Kenobi`,
       img: `./assets/images/obi.jpg`,
       cardColor: 'text-white bg-secondary',
-      healthMax: 105,
-      healthCurrent: 105,
+      healthMax: 104,
+      healthCurrent: 104,
       attack: 9,
       atkStack: 0,
       counter: 19
@@ -88,6 +88,8 @@ gameObj = {
     $('.battle-log').empty()
     $('#game-info-header').text('Choose a character to start!')
     $('#character-select-row').css('display', 'flex')
+    $('.enemy-card-tab').css('visibility', 'hidden')
+    $('.player-card-tab').css('visibility', 'hidden')
     this.slot = 1
     this.wins = 0
     for(char in this.characters){
