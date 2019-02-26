@@ -18,7 +18,7 @@ gameObj = {
       healthCurrent: 100,
       attack: 9,
       atkStack: 0,
-      counter: 12
+      counter: 13
     },
     obi: {
       name: `Obi-Wan Kenobi`,
@@ -28,7 +28,7 @@ gameObj = {
       healthCurrent: 105,
       attack: 9,
       atkStack: 0,
-      counter: 18
+      counter: 19
     },
     vader: {
       name: `Darth Vader`,
@@ -38,7 +38,7 @@ gameObj = {
       healthCurrent: 90,
       attack: 11,
       atkStack: 0,
-      counter: 13
+      counter: 14
     }
   },
   playerChoice: '',
@@ -49,11 +49,13 @@ gameObj = {
     this.characters[this.playerChoice].atkStack += this.characters[this.playerChoice].attack
     this.characters[this.enemyChoice].healthCurrent -= this.characters[this.playerChoice].atkStack
     $(`#${this.enemyChoice}-health`).text(this.characters[this.enemyChoice].healthCurrent)
-    $('.battle-log').append(`<p class="log-data ${this.playerChoice}-log text-light">${this.characters[this.playerChoice].name} attacked ${this.characters[this.enemyChoice].name} for ${this.characters[this.playerChoice].atkStack}.</p>`)
+    $('.battle-log').append(`<p class="log-data ${this.playerChoice}-log player-log text-light">${this.characters[this.playerChoice].name} attacked ${this.characters[this.enemyChoice].name} for ${this.characters[this.playerChoice].atkStack}.</p>`)
     if(this.characters[this.enemyChoice].healthCurrent <= 0){
       console.log('YOU WON THIS FIGHT!')
       $('.battle-log').append(`<p class="log-data ${this.enemyChoice}-log enemy-log text-light">${this.characters[this.enemyChoice].name} has been defeated!</p>`)
       $(`#${this.enemyChoice}`).remove()
+      $('#game-info-header').text('Choose an Opponent!')
+      $('.enemy-card-tab').css('visibility', 'hidden')
       this.enemyChoice = ''
       this.wins++
       if(this.wins === 3){
@@ -67,6 +69,7 @@ gameObj = {
     $('.battle-log').append(`<p class="log-data ${this.enemyChoice}-log enemy-log text-light">${this.characters[this.enemyChoice].name} attacked ${this.characters[this.playerChoice].name} for ${this.characters[this.enemyChoice].counter}.</p>`)
     if(this.characters[this.playerChoice].healthCurrent <= 0){
       console.log('YOU LOSE')
+      $('.battle-log').append(`<p class="log-data ${this.enemyChoice}-log enemy-log text-light">${this.characters[this.enemyChoice].name} has slain you...</p>`)
       $('#game-info-header').text('You lose...')
       $('.btn-restart').addClass('btn-show')
       return;
@@ -83,8 +86,10 @@ gameObj = {
     $('.battle-actions').removeClass('show')
     $('.btn-restart').removeClass('btn-show')
     $('.battle-log').empty()
-    // Need to remove children of the battle-log to clear out previous game happenings.
+    $('#game-info-header').text('Choose a character to start!')
+    $('#character-select-row').css('display', 'flex')
     this.slot = 1
+    this.wins = 0
     for(char in this.characters){
       this.characters[char].healthCurrent = this.characters[char].healthMax
       this.characters[char].atkStack = 0
@@ -105,25 +110,38 @@ gameObj = {
         </div>
         `).appendTo(`#cs${this.slot}`)
         this.slot++
-        $('.character-cards').on('click', (e)=>{
-          console.log('Card clicked')
-          console.log(e)
-          if(gameObj.playerChoice === ''){
-            gameObj.playerChoice = e.currentTarget.id
-            $(`#${e.currentTarget.id}`).appendTo('#cs-player')
-          } else if (gameObj.enemyChoice === '' && gameObj.playerChoice !== e.currentTarget.id){
-            gameObj.enemyChoice = e.currentTarget.id
-            $(`#${e.currentTarget.id}`).appendTo('#cs-enemy')
-            $('.battle-log').addClass('show')
-            $('.battle-actions').addClass('show')
-          }
-        })
     }
+    // On click event for the character cards
+    $('.character-cards').on('click', (e)=>{
+      console.log('Card clicked')
+      console.log(e)
+      if(gameObj.playerChoice === ''){
+        gameObj.playerChoice = e.currentTarget.id
+        $('#game-info-header').text('Choose an Opponent!')
+        $(`#${e.currentTarget.id}`).appendTo('#cs-player')
+        $('.player-card-tab').css('visibility', 'visible')
+        this.slot = 1
+        for(char in gameObj.characters){
+          if(char !== gameObj.playerChoice){
+            console.log(char)
+            $(`#${char}`).appendTo(`#cs${this.slot}-opponent`)
+            this.slot++
+          }
+          $('#character-select-row').css('display', 'none')
+        }
+      } else if (gameObj.enemyChoice === '' && gameObj.playerChoice !== e.currentTarget.id){
+        gameObj.enemyChoice = e.currentTarget.id
+        $(`#${e.currentTarget.id}`).appendTo('#cs-enemy')
+        $('#game-info-header').text('Fight!')
+        $('.battle-log').addClass('show')
+        $('.battle-actions').addClass('show')
+        $('.enemy-card-tab').css('visibility', 'visible')
+      }
+    })
   }
 }
 
 gameObj.resetFunction()
-
 
 $('#atk-btn').on('click', ()=>{
   if(gameObj.enemyChoice !== '' && gameObj.characters[gameObj.playerChoice].healthCurrent > 0){
