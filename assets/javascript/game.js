@@ -45,11 +45,13 @@ gameObj = {
   enemyChoice: '',
   wins: 0,
   slot: 1,
+  // function for processing a players attack against the chosen oppoenent
   combatFunction: function(){
     this.characters[this.playerChoice].atkStack += this.characters[this.playerChoice].attack
     this.characters[this.enemyChoice].healthCurrent -= this.characters[this.playerChoice].atkStack
     $(`#${this.enemyChoice}-health`).text(this.characters[this.enemyChoice].healthCurrent)
     $('.battle-log').append(`<p class="log-data ${this.playerChoice}-log player-log text-light">${this.characters[this.playerChoice].name} attacked ${this.characters[this.enemyChoice].name} for ${this.characters[this.playerChoice].atkStack}.</p>`)
+    // Check if player has defeated their opponent and updates elements and variables relating to winning combat.
     if(this.characters[this.enemyChoice].healthCurrent <= 0){
       console.log('YOU WON THIS FIGHT!')
       $('.battle-log').append(`<p class="log-data ${this.enemyChoice}-log enemy-log text-light">${this.characters[this.enemyChoice].name} has been defeated!</p>`)
@@ -58,24 +60,30 @@ gameObj = {
       $('.enemy-card-tab').css('visibility', 'hidden')
       this.enemyChoice = ''
       this.wins++
-      if(this.wins === 3){
+      //
+      console.log(Object.keys(this.characters).length)
+      if(this.wins === Object.keys(this.characters).length - 1){
         $('#game-info-header').text('You win!')
         $('.btn-restart').addClass('btn-show')
+        $('.opponent-tag').css('visibility', 'hidden')
       }
       return;
     }
     this.characters[this.playerChoice].healthCurrent -= this.characters[this.enemyChoice].counter
     $(`#${this.playerChoice}-health`).text(this.characters[this.playerChoice].healthCurrent)
     $('.battle-log').append(`<p class="log-data ${this.enemyChoice}-log enemy-log text-light">${this.characters[this.enemyChoice].name} attacked ${this.characters[this.playerChoice].name} for ${this.characters[this.enemyChoice].counter}.</p>`)
+    // Check if the player health has dropped to or below 0, then display necessary information if so.
     if(this.characters[this.playerChoice].healthCurrent <= 0){
       console.log('YOU LOSE')
       $('.battle-log').append(`<p class="log-data ${this.enemyChoice}-log enemy-log text-light">${this.characters[this.enemyChoice].name} has slain you...</p>`)
       $('#game-info-header').text('You lose...')
       $('.btn-restart').addClass('btn-show')
+      $('.opponent-tag').css('visibility', 'hidden')
       return;
     }
   },
   resetFunction: function(){
+    // adjusting gameObj variables and hiding/showing elements as necessary to return to displaying the correct starting state.
     $(`#${this.playerChoice}`).remove()
     if(this.enemyChoice !== ''){
       $(`#${this.enemyChoice}`).remove()
@@ -92,6 +100,8 @@ gameObj = {
     $('.player-card-tab').css('visibility', 'hidden')
     this.slot = 1
     this.wins = 0
+    // Creating the character cards to be displayed and interacted with on the page
+    // Based on the characters available within the characters object within gameObj
     for(char in this.characters){
       this.characters[char].healthCurrent = this.characters[char].healthMax
       this.characters[char].atkStack = 0
@@ -113,7 +123,7 @@ gameObj = {
         `).appendTo(`#cs${this.slot}`)
         this.slot++
     }
-    // On click event for the character cards
+    // attaching the on click event for the character cards after they have been created.
     $('.character-cards').on('click', (e)=>{
       console.log('Card clicked')
       console.log(e)
@@ -122,6 +132,7 @@ gameObj = {
         $('#game-info-header').text('Choose an Opponent!')
         $(`#${e.currentTarget.id}`).appendTo('#cs-player')
         $('.player-card-tab').css('visibility', 'visible')
+        $('.opponent-tag').css('visibility', 'visible')
         this.slot = 1
         for(char in gameObj.characters){
           if(char !== gameObj.playerChoice){
@@ -144,12 +155,13 @@ gameObj = {
 }
 
 gameObj.resetFunction()
-
+// Attack button on click, checks if there is an enemy chosen and if the player is still alive before running attack function/method
 $('#atk-btn').on('click', ()=>{
   if(gameObj.enemyChoice !== '' && gameObj.characters[gameObj.playerChoice].healthCurrent > 0){
     gameObj.combatFunction()
   }
 })
+// Button to restart the game once the player has either lost or won.
 $('.btn-restart').on('click', ()=>{
   console.log('Restarting game...')
   gameObj.resetFunction()

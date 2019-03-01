@@ -172,6 +172,7 @@ body {
   position: relative;
 }
 #cs1-opponent .opponent-tag {
+  visibility: hidden;
   position: absolute;
   width: 0;
   word-wrap: break-word;
