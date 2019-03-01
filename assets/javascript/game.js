@@ -60,8 +60,8 @@ gameObj = {
       $('.enemy-card-tab').css('visibility', 'hidden')
       this.enemyChoice = ''
       this.wins++
-      //
-      console.log(Object.keys(this.characters).length)
+      // Checks if the user has defeated all available opponents, if so display that they win and shows restart button.
+      // Checked based on the total number of characters, minus the 1 the user selected.
       if(this.wins === Object.keys(this.characters).length - 1){
         $('#game-info-header').text('You win!')
         $('.btn-restart').addClass('btn-show')
