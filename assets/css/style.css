@@ -16,7 +16,7 @@ header {
   width: 100%;
   text-align: center;
   color: #fff;
-  background: #3f3f3f;
+  background: #021C3D;
 }
 p {
   font-size: 20px;
@@ -25,7 +25,9 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: #afafaf;
+  background: url('../images/background.jpg');
+  background-size: cover;
+  background-position: center;
 }
 .btn-restart {
   display: none;
